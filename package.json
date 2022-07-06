@@ -5,6 +5,7 @@
     "type": "git",
     "url": "git@github.com:SouCrypto/smartcontracts.git"
   },
+  "license": "MIT",
   "scripts": {
     "clean": "hardhat clean",
     "compile": "hardhat compile",
