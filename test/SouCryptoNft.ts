@@ -1,6 +1,5 @@
 import chai from "chai";
 import { ethers } from "hardhat";
-import { utils } from "ethers";
 import { solidity } from "ethereum-waffle";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
