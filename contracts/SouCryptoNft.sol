@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
@@ -18,8 +17,13 @@ contract SouCryptoNft is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burna
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    uint256 public minValuePublicMint = 0.01 ether;
+    address payable public ownerAddress;
 
-    constructor() ERC721("SouCryptoNft", "SOUNFT") {
+    constructor(uint256 _minValuePublicMint) ERC721("SouCryptoNft", "SOUNFT") {
+        ownerAddress = payable(msg.sender);
+        minValuePublicMint = _minValuePublicMint;
+
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _setupRole(PAUSER_ROLE, msg.sender);
         _setupRole(MINTER_ROLE, msg.sender);
@@ -44,6 +48,22 @@ contract SouCryptoNft is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burna
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
         emit MintNft(tokenId);
+    }
+
+    function publicMint(string memory uri) public payable whenNotPaused{
+        require(msg.value >= minValuePublicMint, "Not enough coin sent: check price.");
+
+        uint256 tokenId = _tokenIdCounter.current();
+        _tokenIdCounter.increment();
+        _safeMint(msg.sender, tokenId);
+        _setTokenURI(tokenId, uri);
+        emit MintNft(tokenId);
+    }
+
+    function withdraw() public {
+        require(msg.sender == ownerAddress, "You are not the owner of the contract");
+        uint256 balance = address(this).balance;
+        ownerAddress.transfer(balance);
     }
 
     function supportsInterface(bytes4 interfaceId) 

@@ -18,12 +18,13 @@ describe("SouCrypto Marketplace", function () {
     let addr2: SignerWithAddress;
     let addr3: SignerWithAddress;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
         [owner, addr1, addr2, addr3] = await ethers.getSigners();
+        const minValuePublicMint = utils.parseUnits("0.01", 18);
 
         //SouCrypto NFT
         const ContractSouCryptoNftFactory = await ethers.getContractFactory("SouCryptoNft");
-        contractSouCryptoNft = await ContractSouCryptoNftFactory.deploy();
+        contractSouCryptoNft = await ContractSouCryptoNftFactory.deploy(minValuePublicMint);
         await contractSouCryptoNft.deployed();
 
         //Marketplace
@@ -38,7 +39,7 @@ describe("SouCrypto Marketplace", function () {
         await contractSouCryptoMarketplace.deployed();
     });
 
-    it("should mint nft and transfer", async function () {
+    it("should mint nft and transfer", async () => {
         const nftURI = "https://ipfs.io/ipfs/QmTCnV18BUkhzcshH2fdd212oN5ufx8GvXc1kUTrjP3ptz?filename=metadata.json"
         const oneEth = utils.parseUnits("1", 18);
 

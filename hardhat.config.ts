@@ -46,10 +46,10 @@ const config: HardhatUserConfig = {
     local: {
       url: "http://127.0.0.1:7545",
       accounts: [
-        "510b08e64096cd5d6ebd8630f2fbe6b7ec4b03a9257851e2dd91fc3a05715b65",
-        "e8c9db2988537ccf590a1fda44cde67cd4fbadb710e1d9a2fe119862ac28797b",
-        "5f70ab4bf3a1485de456a42da7802a6d290595ab99d5c25ef4317b083ddcb33f",
-        "62bfd196b9c324f92e17374a8af7aafa16cc9a996b5dd9981de0463ab75dc1fb"
+        "17ae93f23f7bc7fb63795d067b98946cfc50fe3a1bc6617b6ef0dbad4a1ca88d",
+        "1a44f82552b90d05f01eaf25c9cbe0ad43190162ef4ede748ecbf087aee803f3",
+        "60ea6ad36da10e9cc77c886df9b589bed5df8644d18ac6fcb5eb23d2da0d5ea3",
+        "5c633fee605bf0e69d0d4faf61c2c5abfe02907817d476eebcd2dfdb524c07bf"
       ]
     },
     matic: {
@@ -61,6 +61,9 @@ const config: HardhatUserConfig = {
       chainId: 56,
       gasPrice: 20000000000,
       accounts: [process.env.BINANCE_PRIVATE_KEY || ""]
+    },
+    ethereum: {
+      url: ""
     }
   },
   etherscan: {
