@@ -10,7 +10,14 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-contract SouCryptoNft is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable, Pausable, AccessControl {
+contract SouCryptoNft is
+    ERC721,
+    ERC721Enumerable,
+    ERC721URIStorage,
+    ERC721Burnable,
+    Pausable,
+    AccessControl
+{
     using SafeMath for uint256;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
@@ -37,12 +44,19 @@ contract SouCryptoNft is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burna
         _unpause();
     }
 
-    function _burn(uint256 _tokenId) internal override(ERC721, ERC721URIStorage) {
-        require(msg.sender == ownerOf(_tokenId), 'Not owner of this token');
+    function _burn(uint256 _tokenId)
+        internal
+        override(ERC721, ERC721URIStorage)
+    {
+        require(msg.sender == ownerOf(_tokenId), "Not owner of this token");
         super._burn(_tokenId);
     }
 
-    function safeMint(address to, string memory uri) public onlyRole(MINTER_ROLE) whenNotPaused{
+    function safeMint(address to, string memory uri)
+        public
+        onlyRole(MINTER_ROLE)
+        whenNotPaused
+    {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
@@ -50,8 +64,11 @@ contract SouCryptoNft is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burna
         emit MintNft(tokenId);
     }
 
-    function publicMint(string memory uri) public payable whenNotPaused{
-        require(msg.value >= minValuePublicMint, "Not enough coin sent: check price.");
+    function publicMint(string memory uri) public payable whenNotPaused {
+        require(
+            msg.value >= minValuePublicMint,
+            "Not enough coin sent: check price."
+        );
 
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
@@ -61,34 +78,38 @@ contract SouCryptoNft is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burna
     }
 
     function withdraw() public {
-        require(msg.sender == ownerAddress, "You are not the owner of the contract");
+        require(
+            msg.sender == ownerAddress,
+            "You are not the owner of the contract"
+        );
         uint256 balance = address(this).balance;
         ownerAddress.transfer(balance);
     }
 
-    function supportsInterface(bytes4 interfaceId) 
-    public 
-    view 
-    virtual 
-    override(ERC721, ERC721Enumerable, AccessControl) 
-    returns (bool) 
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(ERC721, ERC721Enumerable, AccessControl)
+        returns (bool)
     {
         return super.supportsInterface(interfaceId);
     }
 
     function tokenURI(uint256 tokenId)
-    public
-    view
-    override(ERC721, ERC721URIStorage)
-    returns (string memory)
+        public
+        view
+        override(ERC721, ERC721URIStorage)
+        returns (string memory)
     {
         return super.tokenURI(tokenId);
     }
 
-    function _beforeTokenTransfer(address from, address to, uint256 tokenId)
-        internal
-        override(ERC721, ERC721Enumerable) whenNotPaused
-    {
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal override(ERC721, ERC721Enumerable) whenNotPaused {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 

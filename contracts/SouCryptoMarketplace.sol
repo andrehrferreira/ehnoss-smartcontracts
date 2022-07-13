@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 contract SouCryptoMarketplace {
     using SafeMath for uint256;
     using Counters for Counters.Counter;
-    
+
     IERC721 contractAddress;
     Counters.Counter private _itemsSold;
 
@@ -31,7 +31,7 @@ contract SouCryptoMarketplace {
     mapping(uint256 => uint256) public tradesByTokenId;
     uint256 public tradeCounter;
 
-    constructor (
+    constructor(
         address _contractAddress,
         address _teamWallet,
         address _creatorWallet
@@ -42,12 +42,33 @@ contract SouCryptoMarketplace {
         tradeCounter = 0;
     }
 
-    function getTrade(uint256 _trade) public virtual view returns(address, uint256, uint256, bytes32) {
+    function getTrade(uint256 _trade)
+        public
+        view
+        virtual
+        returns (
+            address,
+            uint256,
+            uint256,
+            bytes32
+        )
+    {
         Trade memory trade = trades[_trade];
         return (trade.owner, trade.item, trade.price, trade.status);
     }
 
-    function getTrageByTokenId(uint256 _item) public virtual view returns(uint256, address, uint256, uint256, bytes32) {
+    function getTrageByTokenId(uint256 _item)
+        public
+        view
+        virtual
+        returns (
+            uint256,
+            address,
+            uint256,
+            uint256,
+            bytes32
+        )
+    {
         uint256 _trade = tradesByTokenId[_item];
         require(_trade > 0, "This item is not for sale");
 
@@ -75,7 +96,10 @@ contract SouCryptoMarketplace {
     function executeTrade(uint256 _trade) public payable {
         Trade memory trade = trades[_trade];
         require(trade.status == "Open", "Trade is not Open.");
-        require(msg.value == trade.price, "Price must be equal to listing price");
+        require(
+            msg.value == trade.price,
+            "Price must be equal to listing price"
+        );
 
         uint256 amount = trade.price;
         uint256 taxedAmount = trade.price;
@@ -94,7 +118,7 @@ contract SouCryptoMarketplace {
 
         trade.owner.transfer(taxedAmount);
         contractAddress.transferFrom(address(this), msg.sender, trade.item);
-        
+
         _itemsSold.increment();
         trades[_trade].status = "Executed";
         tradesByTokenId[trade.item] = 0;
@@ -127,7 +151,7 @@ contract SouCryptoMarketplace {
         Trade[] memory items = new Trade[](itemsCount);
 
         for (uint256 i = 0; i < tradeCounter; i++) {
-            if(trades[i].status == "Open"){
+            if (trades[i].status == "Open") {
                 Trade storage currentItem = trades[i];
                 items[currentIndex] = currentItem;
                 currentIndex += 1;

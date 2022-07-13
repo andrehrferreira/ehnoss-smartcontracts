@@ -22,49 +22,49 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 function getGasPrice(gasPrice: string | undefined) {
   if (gasPrice) {
-      return parseInt(gasPrice, 10);
+    return parseInt(gasPrice, 10);
   } else {
-      return "auto";
+    return "auto";
   }
 }
 
 const config: HardhatUserConfig = {
   solidity: {
-      version: "0.8.9",
-      settings: {
-          metadata: {
-              bytecodeHash: "none",
-          },
-          optimizer: {
-              enabled: true,
-              runs: 1000,
-          },
+    version: "0.8.9",
+    settings: {
+      metadata: {
+        bytecodeHash: "none",
       },
+      optimizer: {
+        enabled: true,
+        runs: 1000,
+      },
+    },
   },
   defaultNetwork: "local",
   networks: {
     local: {
       url: "http://127.0.0.1:7545",
       accounts: [
-        "17ae93f23f7bc7fb63795d067b98946cfc50fe3a1bc6617b6ef0dbad4a1ca88d",
-        "1a44f82552b90d05f01eaf25c9cbe0ad43190162ef4ede748ecbf087aee803f3",
-        "60ea6ad36da10e9cc77c886df9b589bed5df8644d18ac6fcb5eb23d2da0d5ea3",
-        "5c633fee605bf0e69d0d4faf61c2c5abfe02907817d476eebcd2dfdb524c07bf"
-      ]
+        "9b0073bdda0bafcd74a412afb854b6df92d66730397043a1b5103ee80f44c5ab",
+        "e520f358f8d78e3caed9adc528b71d43589307d2f52ca6d3306d9259f8c6e407",
+        "186355272cc662345c782f7ebe29c7bf9f49004878015b6ed95ca2fa34d22600",
+        "5a2cf004175a9452e09808479fc0422f343db4dc995936e431270a7fde3947a9",
+      ],
     },
     matic: {
       url: "https://rpc-mumbai.maticvigil.com",
-      accounts: [process.env.POLYGON_PRIVATE_KEY || ""]
+      accounts: [process.env.POLYGON_PRIVATE_KEY || ""],
     },
     bsc: {
       url: "https://bsc-dataseed.binance.org",
       chainId: 56,
       gasPrice: 20000000000,
-      accounts: [process.env.BINANCE_PRIVATE_KEY || ""]
+      accounts: [process.env.BINANCE_PRIVATE_KEY || ""],
     },
     ethereum: {
-      url: ""
-    }
+      url: "",
+    },
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
@@ -78,12 +78,12 @@ const config: HardhatUserConfig = {
     target: "ethers-v5",
   },
   abiExporter: {
-      path: './abi',
-      clear: true,
-      flat: true,
-      only: [],
-      spacing: 2
-  }
+    path: "./abi",
+    clear: true,
+    flat: true,
+    only: [],
+    spacing: 2,
+  },
 };
 
 export default config;
